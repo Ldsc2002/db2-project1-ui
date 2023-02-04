@@ -12,8 +12,8 @@ function App() {
 
     return (
         <div>
-            {jobs.map((job) => (
-                <div key={job._id}>
+            {jobs.map((job, index) => (
+                <div key={index}>
                     <h1>{job.title}</h1>
                 </div>
             ))}
