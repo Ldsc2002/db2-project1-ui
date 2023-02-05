@@ -18,7 +18,7 @@ function JobCard(props) {
                     {job.title}
                 </Typography>
 
-                <Typography variant="h6" color="text.secondary" sx={{mb: 1}}>
+                <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
                     {job.description}
                 </Typography>
 
@@ -31,7 +31,7 @@ function JobCard(props) {
                 <Typography variant="subtitle1" color="text.secondary">
                     Experience:
                     {' '}
-                    {`${job.experience.split(" ")[0]} ${parseInt(job.experience.split(" ")[0]) > 1 ? 'years' : 'year'}`}
+                    {`${job.experience.split(' ')[0]} ${parseInt(job.experience.split(' ')[0], 10) > 1 ? 'years' : 'year'}`}
                 </Typography>
 
                 <Typography variant="subtitle1" color="text.secondary">
@@ -51,7 +51,6 @@ function JobCard(props) {
                     {' '}
                     {job.category}
                 </Typography>
-
 
                 <Typography variant="subtitle1" color="text.secondary">
                     Spots available:
