@@ -3,20 +3,49 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import classes from './UserInfo.module.css'
 import UserContact from '../userContact/UserContact'
+import { getProjection, updateOneInCollection } from '../db/api'
 
 function UserInfo(props) {
     const { user } = props
+    const id = { $oid: user._id }
+
+    const [name_, setName] = React.useState('')
+    const [description_, setDescription] = React.useState('')
+
+    getProjection('user_worker', { _id: id }, {name:1, _id:0}).then((data) => {
+        if (data.document !== null) {
+            setName(data.document.name)
+        } else {
+            getProjection('user_enterprise', { _id: id }, {name:1, _id:0}).then((dataE) => {
+                if (dataE.document !== null) {
+                    setName(data.document.name)
+                }
+            })
+        }
+    })
+
+    getProjection('user_worker', { _id: id }, {description:1, _id:0}).then((data) => {
+        if (data.document !== null) {
+            setDescription(data.document.description)
+        } else {
+            getProjection('user_enterprise', { _id: id }, {description:1, _id:0}).then((dataE) => {
+                if (dataE.document !== null) {
+                    setDescription(data.document.description)
+                }
+            })
+        }
+    })
 
     return (
         <div className={classes.container}>
             <img src={user.photo} alt="Profile" className={classes.image} />
 
             <Typography variant="h3" color="text.primary" sx={{ mt: 2 }}>
-                {user.name}
+                {name_}
             </Typography>
 
             <Typography variant="h5" color="text.secondary">
-                {user.description}
+                {description_}
             </Typography>
 
             {/* Worker-only attributes */}

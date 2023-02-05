@@ -6,10 +6,10 @@ import classes from './JobsList.module.css'
 
 function App() {
     const [jobs, setJobs] = useState([])
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(0)
 
     useEffect(() => {
-        getFromCollectionPagination('jobs', page).then((data) => {
+        getFromCollectionPagination('jobs',  0, { date: -1 }).then((data) => {
             setJobs(jobs.concat(data.documents))
         })
     }, [page])
