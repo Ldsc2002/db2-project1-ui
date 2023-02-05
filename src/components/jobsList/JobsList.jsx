@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { getAllFromCollection } from '../db/api'
+import Button from '@mui/material/Button'
+import { getFromCollectionPagination } from '../db/api'
+import JobCard from '../jobCard/JobCard'
+import classes from './JobsList.module.css'
 
 function App() {
     const [jobs, setJobs] = useState([])
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
-        getAllFromCollection('jobs').then((data) => {
-            setJobs(data.documents)
+        getFromCollectionPagination('jobs', page).then((data) => {
+            setJobs(jobs.concat(data.documents))
         })
-    }, [])
+    }, [page])
 
     return (
-        <div>
-            {
-                jobs.map((job) => (
+        <div className={classes.container}>
+            <div>
+                {
+                    jobs.map((job) => (
                     // eslint-disable-next-line no-underscore-dangle
-                    <div key={job._id}>
-                        <h1>{job.title}</h1>
-                    </div>
-                ))
-            }
+                        <JobCard key={job._id} job={job} />
+                    ))
+                }
+            </div>
+
+            <Button variant="contained" onClick={() => setPage(page + 1)}>Load More</Button>
+
         </div>
     )
 }
