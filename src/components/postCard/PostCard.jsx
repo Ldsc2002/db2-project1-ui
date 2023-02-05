@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
@@ -9,7 +9,10 @@ import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 import UserComment from '../userComment/UserComment'
+import classes from './PostCard.module.css'
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -35,10 +38,15 @@ const ExpandMore = styled((props) => {
 function PostCard(props) {
     const { post } = props
 
-    const [expanded, setExpanded] = React.useState(false)
+    const [newComment, setNewComment] = useState('')
+    const [expanded, setExpanded] = useState(false)
 
     const handleExpandClick = () => {
         setExpanded(!expanded)
+    }
+
+    const handleSubmit = () => {
+        console.log(newComment)
     }
 
     return (
@@ -71,10 +79,32 @@ function PostCard(props) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent sx={{ pt: 0 }}>
                     {post.comments.map((comment, index) => (
-                        <div style={{ marginBottom: `${index < post.comments.length - 1 ? '15px' : '0px'}` }}>
-                            <UserComment key={comment.commentator_id} comment={comment} />
+                        <div style={{ marginBottom: `${index < post.comments.length - 1 ? '15px' : '0px'}` }} key={comment.commentator_id}>
+                            <UserComment comment={comment} />
                         </div>
                     ))}
+
+                    <div className={classes.newComment}>
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="comment"
+                            label="New comment"
+                            autoFocus
+                            sx={{ mr: 2 }}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 2, mb: 1, width: '120px' }}
+                            onClick={() => handleSubmit()}
+                        >
+                            Submit
+                        </Button>
+
+                    </div>
                 </CardContent>
             </Collapse>
         </Card>
