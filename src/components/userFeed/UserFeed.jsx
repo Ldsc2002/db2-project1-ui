@@ -4,9 +4,11 @@ import { getFromCollectionPagination } from '../db/api'
 import PostCard from '../postCard/PostCard'
 import classes from './UserFeed.module.css'
 
-function UserFeed() {
+function UserFeed(props) {
     const [posts, setPosts] = useState([])
     const [page, setPage] = useState(1)
+
+    const { user } = props
 
     useEffect(() => {
         getFromCollectionPagination('posts', page).then((data) => {
@@ -19,7 +21,7 @@ function UserFeed() {
             <div>
                 {posts.map((post) => (
                 // eslint-disable-next-line no-underscore-dangle
-                    <PostCard key={post._id} post={post} />
+                    <PostCard key={post._id} post={post} user={user} />
                 ))}
             </div>
 

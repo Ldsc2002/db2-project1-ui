@@ -36,7 +36,7 @@ const ExpandMore = styled((props) => {
 }))
 
 function PostCard(props) {
-    const { post } = props
+    const { post, user } = props
 
     const [newComment, setNewComment] = useState('')
     const [expanded, setExpanded] = useState(false)
@@ -46,7 +46,8 @@ function PostCard(props) {
     }
 
     const handleSubmit = () => {
-        console.log(newComment)
+        // eslint-disable-next-line no-underscore-dangle
+        console.log(user._id, newComment)
     }
 
     return (
@@ -58,7 +59,7 @@ function PostCard(props) {
                 component="img"
                 height="194"
                 image={post.image}
-                alt="Paella dish"
+                alt="Post image"
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
@@ -90,7 +91,6 @@ function PostCard(props) {
                             fullWidth
                             id="comment"
                             label="New comment"
-                            autoFocus
                             sx={{ mr: 2 }}
                             onChange={(e) => setNewComment(e.target.value)}
                         />
