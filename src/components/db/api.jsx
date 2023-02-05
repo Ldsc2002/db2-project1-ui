@@ -26,6 +26,27 @@ export const getFilteredCollection = async (collection, filter, sort) => {
     return response.json()
 }
 
+export const getProjection = async (collection, filter, projection) => {
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        filter,
+        projection,
+    })
+
+    const response = await fetch(`${DB_URI}findOne`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+
+    return response.json()
+}
+
 export const getAllFromCollection = async (collection) => {
     const data = JSON.stringify({
         database: DB,
