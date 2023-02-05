@@ -41,6 +41,8 @@ function PostCard(props) {
         post, user, index, setPosts, posts,
     } = props
 
+    post.comments.sort((a, b) => new Date(b.date) - new Date(a.date))
+
     const [newComment, setNewComment] = useState('')
     const [expanded, setExpanded] = useState(false)
 

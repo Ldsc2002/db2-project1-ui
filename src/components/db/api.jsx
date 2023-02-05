@@ -5,12 +5,13 @@ const CLUSTER = 'Cluster0'
 const DB = 'project1'
 const PAGE_SIZE = 10
 
-export const getFilteredCollection = async (collection, filter) => {
+export const getFilteredCollection = async (collection, filter, sort) => {
     const data = JSON.stringify({
         database: DB,
         dataSource: CLUSTER,
         collection,
         filter,
+        sort
     })
 
     const response = await fetch(`${DB_URI}findOne`, {
@@ -44,13 +45,14 @@ export const getAllFromCollection = async (collection) => {
     return response.json()
 }
 
-export const getFromCollectionPagination = async (collection, page) => {
+export const getFromCollectionPagination = async (collection, page, sort) => {
     const skip = page * PAGE_SIZE
 
     const data = JSON.stringify({
         database: DB,
         dataSource: CLUSTER,
         collection,
+        sort,
         skip,
         limit: PAGE_SIZE,
     })
@@ -77,6 +79,46 @@ export const updateOneInCollection = async (collection, filter, update) => {
     })
 
     const response = await fetch(`${DB_URI}updateOne`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+
+    return response.json()
+}
+
+export const deleteOneInCollection = async (collection, filter) => {
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        filter,
+    })
+
+    const response = await fetch(`${DB_URI}deleteOne`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+
+    return response.json()
+}
+
+export const aggregateInCollection = async (collection, pipeline) => {
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        pipeline,
+    })
+
+    const response = await fetch(`${DB_URI}aggregate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

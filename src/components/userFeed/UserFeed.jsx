@@ -11,7 +11,7 @@ function UserFeed(props) {
     const { user } = props
 
     useEffect(() => {
-        getFromCollectionPagination('posts', page).then((data) => {
+        getFromCollectionPagination('posts', page, { date: -1 }).then((data) => {
             setPosts(posts.concat(data.documents))
         })
     }, [page])
