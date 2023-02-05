@@ -71,8 +71,8 @@ function PostCard(props) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent sx={{ pt: 0 }}>
                     {post.comments.map((comment, index) => (
-                        <div style={{marginBottom: `${index < post.comments.length - 1? "15px" : "0px"}`}}>
-                            <UserComment key={comment.commentator_id} comment={comment}/>
+                        <div style={{ marginBottom: `${index < post.comments.length - 1 ? '15px' : '0px'}` }}>
+                            <UserComment key={comment.commentator_id} comment={comment} />
                         </div>
                     ))}
                 </CardContent>

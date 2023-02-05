@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import Button from '@mui/material/Button'
 import { getFromCollectionPagination } from '../db/api'
 import PostCard from '../postCard/PostCard'
-import Button from '@mui/material/Button'
 import classes from './UserFeed.module.css'
 
 function UserFeed() {
