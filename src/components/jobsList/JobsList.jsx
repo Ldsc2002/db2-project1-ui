@@ -12,11 +12,14 @@ function App() {
 
     return (
         <div>
-            {jobs.map((job, index) => (
-                <div key={index}>
-                    <h1>{job.title}</h1>
-                </div>
-            ))}
+            {
+                jobs.map((job) => (
+                    // eslint-disable-next-line no-underscore-dangle
+                    <div key={job._id}>
+                        <h1>{job.title}</h1>
+                    </div>
+                ))
+            }
         </div>
     )
 }
