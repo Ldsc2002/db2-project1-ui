@@ -15,6 +15,11 @@ function UserFeed(props) {
     
     const handleClose = () => {
         setOpenModal(false)
+        getFromCollectionPagination('posts', 0, { date: -1 }).then((data) => {
+            setPosts(data.documents)
+        })
+        setPosts([])
+        setPage(0)
     };
 
     useEffect(() => {
