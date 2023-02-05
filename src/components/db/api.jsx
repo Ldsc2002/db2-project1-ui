@@ -129,3 +129,23 @@ export const aggregateInCollection = async (collection, pipeline) => {
 
     return response.json()
 }
+
+export const insertOneInCollection = async (collection, document) => {
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        document,
+    })
+
+    const response = await fetch(`${DB_URI}insertOne`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+
+    return response.json()
+}
