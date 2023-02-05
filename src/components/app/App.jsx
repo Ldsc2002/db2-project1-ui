@@ -4,6 +4,8 @@ import NavBar from '../navBar/NavBar'
 import JobsList from '../jobsList/JobsList'
 import UserFeed from '../userFeed/UserFeed'
 
+const pages = ['Feed', 'Jobs']
+
 function App() {
     const [user, setUser] = useState(null)
     const [page, setPage] = useState('Feed')
@@ -12,7 +14,7 @@ function App() {
         <div>
             { user === null ? <SignIn setUser={setUser} /> : (
                 <>
-                    <NavBar setPage={setPage} />
+                    <NavBar setPage={setPage} pages={pages} />
                     {page === 'Feed' && <UserFeed user={user} />}
                     {page === 'Jobs' && <JobsList user={user} />}
                 </>

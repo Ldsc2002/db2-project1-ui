@@ -6,10 +6,8 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 
-const pages = ['Feed', 'Jobs']
-
 function NavBar(props) {
-    const { setPage } = props
+    const { setPage, pages } = props
 
     return (
         <AppBar position="fixed">
