@@ -11,17 +11,17 @@ function UserInfo(props) {
         <div className={classes.container}>
             <img src={user.photo} alt="Profile" className={classes.image} />
 
-            <Typography variant="body" color="text.primary">
+            <Typography variant="h3" color="text.primary" sx={{ mt: 2 }}>
                 {user.name}
             </Typography>
 
-            <Typography variant="body" color="text.primary">
+            <Typography variant="h5" color="text.secondary">
                 {user.description}
             </Typography>
 
             {/* Worker-only attributes */}
             {user.age && (
-                <Typography variant="body" color="text.primary">
+                <Typography variant="h5" color="text.secondary">
                     Age:
                     {' '}
                     {user.age}
@@ -30,12 +30,12 @@ function UserInfo(props) {
 
             {user.experience && (
                 <>
-                    <Typography variant="body" color="text.primary">
+                    <Typography variant="h6" color="text.primary" sx={{ mt: 3 }}>
                         Experience:
                     </Typography>
                     {user.experience.map((exp) => (
                         <div key={exp.id}>
-                            <Typography variant="body" color="text.primary">
+                            <Typography variant="body" color="text.secondary">
                                 {exp.position}
                                 {' '}
                                 at
@@ -54,21 +54,24 @@ function UserInfo(props) {
             )}
 
             {user.habilities && (
-                <Typography variant="body" color="text.primary">
-                    Skills:
-                    {' '}
-                    {user.habilities.map((hab) => hab.name).join(', ')}
-                </Typography>
+                <>
+                    <Typography variant="h6" color="text.primary" sx={{ mt: 3 }}>
+                        Skills:
+                    </Typography>
+                    <Typography variant="body" color="text.secondary">
+                        {user.habilities.map((hab) => hab.name).join(', ')}
+                    </Typography>
+                </>
             )}
 
             {user.education && (
                 <>
-                    <Typography variant="body" color="text.primary">
+                    <Typography variant="h6" color="text.primary" sx={{ mt: 3 }}>
                         Education:
                     </Typography>
 
                     {user.education.map((edu) => (
-                        <Typography key={edu.id} variant="body" color="text.primary">
+                        <Typography key={edu.id} variant="body" color="text.secondary">
                             {edu.degree}
                             {' '}
                             at
@@ -79,9 +82,10 @@ function UserInfo(props) {
                 </>
             )}
 
-            <Typography variant="body" color="text.primary">
+            <Typography variant="h6" color="text.primary" sx={{ mt: 3 }}>
                 {user.employees ? 'Employees:' : 'Contacts:'}
             </Typography>
+
             {user.contacts && user.contacts.map((contact) => (
                 <UserContact key={contact.id} id={contact.user} />
             ))}
@@ -96,7 +100,7 @@ function UserInfo(props) {
 
             <Button
                 type="submit"
-                href='/'
+                href="/"
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
             >

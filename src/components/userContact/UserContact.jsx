@@ -24,7 +24,7 @@ function UserContact(props) {
     }, [])
 
     return (
-        <Typography variant="body" color="text.primary">
+        <Typography variant="body" color="text.secondary">
             {name}
             {' '}
             {position && `- ${position}`}
