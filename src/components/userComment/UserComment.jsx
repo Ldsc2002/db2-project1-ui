@@ -8,7 +8,7 @@ function UserComment(props) {
     const [commentator, setCommentator] = useState(comment.commentator_id)
 
     useEffect(() => {
-        const userID = { "$oid": comment.commentator_id }
+        const userID = { $oid: comment.commentator_id }
 
         getFilteredCollection('user_worker', { _id: userID }).then((data) => {
             if (data.document === null) {
