@@ -149,3 +149,23 @@ export const insertOneInCollection = async (collection, document) => {
 
     return response.json()
 }
+
+export const deleteFromCollection = async (collection, _id) => {
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        _id,
+    })
+    
+    const response = await fetch(`${DB_URI}delete`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+    
+    return response.json()
+}

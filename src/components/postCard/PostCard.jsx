@@ -13,7 +13,8 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import UserComment from '../userComment/UserComment'
 import classes from './PostCard.module.css'
-import { updateOneInCollection } from '../db/api'
+import { updateOneInCollection, deleteFromCollection } from '../db/api'
+import { DeleteForever } from '@mui/icons-material'
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -70,9 +71,33 @@ function PostCard(props) {
         })
     }
 
+    const handleDeletePost = () => {
+        // eslint-disable-next-line no-underscore-dangle
+        const postID = { $oid: post._id }
+        const post_user_id = { $oid: post.user_id }
+        const current_user_id = { $oid: user._id }
+
+        if (post_user_id.$oid === current_user_id.$oid) {
+            deleteFromCollection('posts', postID)
+                .then(() => {
+                    console.log('Post deleted successfully!');
+                })
+                .catch((error) => {
+                    console.error(`Error deleting post: ${error}`);
+                });
+        }
+    }
+
     return (
         <Card sx={{ maxWidth: 600, mb: 3 }}>
             <CardHeader
+                action={
+                    <IconButton aria-label="delete">
+                        {post.user_id === user._id ? (
+                        <DeleteForever onClick={handleDeletePost} />
+                        ) : null}
+                    </IconButton>
+                }
                 subheader={post.date}
             />
             <CardMedia
