@@ -47,6 +47,7 @@ function UserFeed(props) {
                         setPosts={setPosts}
                         index={index}
                         posts={posts}
+                        handle = {handleClose}
                     />
                 ))}
             </div>

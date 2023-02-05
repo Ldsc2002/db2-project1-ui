@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import UserComment from '../userComment/UserComment'
 import classes from './PostCard.module.css'
-import { updateOneInCollection, deleteFromCollection } from '../db/api'
+import { updateOneInCollection, deleteOneFromCollection } from '../db/api'
 import { DeleteForever } from '@mui/icons-material'
 
 /* eslint-disable react/jsx-props-no-spreading */
@@ -39,7 +39,7 @@ const ExpandMore = styled((props) => {
 
 function PostCard(props) {
     const {
-        post, user, index, setPosts, posts,
+        post, user, index, setPosts, posts, handle,
     } = props
 
     post.comments.sort((a, b) => new Date(a.date) - new Date(b.date))
@@ -78,9 +78,11 @@ function PostCard(props) {
         const current_user_id = { $oid: user._id }
 
         if (post_user_id.$oid === current_user_id.$oid) {
-            deleteFromCollection('posts', postID)
+
+            deleteOneFromCollection('posts', { _id: postID })
                 .then(() => {
                     console.log('Post deleted successfully!');
+                    handle();
                 })
                 .catch((error) => {
                     console.error(`Error deleting post: ${error}`);
