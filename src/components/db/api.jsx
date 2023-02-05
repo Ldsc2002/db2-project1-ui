@@ -66,3 +66,24 @@ export const getFromCollectionPagination = async (collection, page) => {
 
     return response.json()
 }
+
+export const updateOneInCollection = async (collection, filter, update) => {
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        filter,
+        update,
+    })
+
+    const response = await fetch(`${DB_URI}updateOne`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+
+    return response.json()
+}

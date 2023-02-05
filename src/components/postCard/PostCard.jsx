@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import UserComment from '../userComment/UserComment'
 import classes from './PostCard.module.css'
+import { updateOneInCollection } from '../db/api'
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -36,7 +37,9 @@ const ExpandMore = styled((props) => {
 }))
 
 function PostCard(props) {
-    const { post, user } = props
+    const {
+        post, user, index, setPosts, posts,
+    } = props
 
     const [newComment, setNewComment] = useState('')
     const [expanded, setExpanded] = useState(false)
@@ -47,7 +50,22 @@ function PostCard(props) {
 
     const handleSubmit = () => {
         // eslint-disable-next-line no-underscore-dangle
-        console.log(user._id, newComment)
+        const postID = { $oid: post._id }
+
+        const newCommentObj = {
+            // eslint-disable-next-line no-underscore-dangle
+            commentator_id: user._id,
+            comment: newComment,
+            date: new Date().toISOString().split('T')[0],
+        }
+
+        updateOneInCollection('posts', { _id: postID }, { $push: { comments: newCommentObj } }).then(() => {
+            const newPosts = [...posts]
+            newPosts[index].comments.push(newCommentObj)
+            setPosts(newPosts)
+        }).finally(() => {
+            setNewComment('')
+        })
     }
 
     return (
@@ -79,14 +97,15 @@ function PostCard(props) {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent sx={{ pt: 0 }}>
-                    {post.comments.map((comment, index) => (
-                        <div style={{ marginBottom: `${index < post.comments.length - 1 ? '15px' : '0px'}` }} key={comment.commentator_id}>
+                    {post.comments.map((comment) => (
+                        <div style={{ marginBottom: '15px' }} key={comment.commentator_id}>
                             <UserComment comment={comment} />
                         </div>
                     ))}
 
                     <div className={classes.newComment}>
                         <TextField
+                            value={newComment}
                             margin="normal"
                             fullWidth
                             id="comment"

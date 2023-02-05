@@ -19,9 +19,16 @@ function UserFeed(props) {
     return (
         <div className={classes.container}>
             <div>
-                {posts.map((post) => (
-                // eslint-disable-next-line no-underscore-dangle
-                    <PostCard key={post._id} post={post} user={user} />
+                {posts.map((post, index) => (
+                    <PostCard
+                        // eslint-disable-next-line no-underscore-dangle
+                        key={post._id}
+                        post={post}
+                        user={user}
+                        setPosts={setPosts}
+                        index={index}
+                        posts={posts}
+                    />
                 ))}
             </div>
 
