@@ -8,11 +8,11 @@ function UserComment(props) {
     const [commentator, setCommentator] = useState(comment.commentator_id)
 
     useEffect(() => {
-        // TODO IDs are not valid in backend
+        const userID = { "$oid": comment.commentator_id }
 
-        getFilteredCollection('user_worker', { _id: comment.commentator_id }).then((data) => {
+        getFilteredCollection('user_worker', { _id: userID }).then((data) => {
             if (data.document === null) {
-                getFilteredCollection('user_enterprise', { _id: comment.commentator_id }).then((dataE) => {
+                getFilteredCollection('user_enterprise', { _id: userID }).then((dataE) => {
                     if (dataE.document !== null) {
                         setCommentator(dataE.document.name)
                     }
