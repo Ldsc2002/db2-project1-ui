@@ -32,6 +32,22 @@ function UserFeed(props) {
         })
     }, [page])
 
+    useEffect(() => {
+        if (sortCriteria === 'date') {
+            getFromCollectionPaginationAggregation('posts', [{ $sort: { date: -1 } }, {$skip: 0}, {$limit: 10}]).then((data) => {
+                setPosts(data.documents)
+            })
+        }else{
+            getFromCollectionPaginationAggregation('posts', [{ $sort: { likes: -1 } }, {$skip: 0}, {$limit: 10}]).then((data) => {
+                setPosts(data.documents)
+            })
+        }
+
+        setPosts([])
+        setPage(0)
+
+    }, [sortCriteria])
+
 
     return (
         <div className={classes.container}>
@@ -46,10 +62,10 @@ function UserFeed(props) {
 
                 <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px' }}>
                     Sort by:
-                    <Button variant="contained" style={{ marginLeft: '10px' }} onClick={() => {setSortCriteria('likes'); handleClose()}}>
+                    <Button variant="contained" style={{ marginLeft: '10px' }} onClick={() => {setSortCriteria('date')}}>
                         Date
                     </Button>
-                    <Button variant="contained" style={{ marginLeft: '10px' }} onClick={() => {setSortCriteria('date'); handleClose()}}>
+                    <Button variant="contained" style={{ marginLeft: '10px' }} onClick={() => {setSortCriteria('likes')}}>
                         Likes
                     </Button>
                 </div>
