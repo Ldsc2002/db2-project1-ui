@@ -4,6 +4,7 @@ import { getFromCollectionPagination, getProjection } from '../db/api'
 import JobCard from '../jobCard/JobCard'
 import classes from './JobsList.module.css'
 import Modal from '@mui/material/Modal'
+import NewJobForm from '../newJobForm/NewJobForm'
 
 function App(props) {
     const [jobs, setJobs] = useState([])
@@ -33,7 +34,7 @@ function App(props) {
     };
 
     useEffect(() => {
-        getFromCollectionPagination('jobs',  0, { date: -1 }).then((data) => {
+        getFromCollectionPagination('jobs',  page, { date: -1 }).then((data) => {
             setJobs(jobs.concat(data.documents))
         })
     }, [page])
@@ -44,6 +45,9 @@ function App(props) {
             {enterprise && (
                 <>
                     <Button variant="contained" onClick={() => setOpenModal(true)}>Create New Post</Button>
+                    <Modal open={openModal} onClose={handleClose}>
+                        <NewJobForm user={user} onClose={handleClose} />
+                    </Modal>
                 </>
             )}
 
@@ -52,7 +56,7 @@ function App(props) {
                 {
                     jobs.map((job) => (
                     // eslint-disable-next-line no-underscore-dangle
-                        <JobCard key={job._id} job={job} user={user} />
+                        <JobCard key={job._id} job={job} user={user} handle = {handleClose}/>
                     ))
                 }
             </div>

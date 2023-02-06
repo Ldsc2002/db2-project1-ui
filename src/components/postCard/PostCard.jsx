@@ -48,7 +48,7 @@ function PostCard(props) {
 
     const [newComment, setNewComment] = useState('')
     const [expanded, setExpanded] = useState(false)
-    const [likes, setLikes] = useState(post.likes)
+    const [likes_, setLikes] = useState(post.likes)
 
     const handleExpandClick = () => {
         setExpanded(!expanded)
@@ -56,9 +56,11 @@ function PostCard(props) {
 
     useEffect(() => {
         const postID = { $oid: post._id }
-        updateOneInCollection('posts', { _id: postID }, { $inc: { likes: 1 } })
+        if (likes_ > post.likes) {
+            updateOneInCollection('posts', { _id: postID }, { $inc: { likes: 1 } })
+        }
 
-    }, [likes])
+    }, [likes_])
         
 
     const handleSubmit = () => {
@@ -127,9 +129,9 @@ function PostCard(props) {
 
             <CardContent style={{ paddingLeft: '15px', paddingTop:'0px'}}>
                 <IconButton aria-label="like" sx={{ fontSize: '12px' }}>
-                    <Favorite onClick={() => setLikes(likes + 1)} />
+                    <Favorite onClick={() => setLikes(likes_ + 1)} />
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '15px' }}>
-                    {likes}
+                    {likes_}
                     </Typography>
                 </IconButton>
 
