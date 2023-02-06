@@ -3,7 +3,8 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import classes from './UserInfo.module.css'
 import UserContact from '../userContact/UserContact'
-import { getProjection, updateOneInCollection } from '../db/api'
+import PostCardUser from '../postCardUser/PostCardUser'
+import { getProjection, getFromCollectionPaginationAggregation } from '../db/api'
 
 function UserInfo(props) {
     const { user } = props
@@ -12,19 +13,30 @@ function UserInfo(props) {
     const [name_, setName] = React.useState('')
     const [description_, setDescription] = React.useState('')
 
-    getProjection('user_worker', { _id: id }, {name:1, description:1,  _id:0}).then((data) => {
-        if (data.document !== null) {
-            setName(data.document.name)
-            setDescription(data.document.description)
-        } else {
-            getProjection('user_enterprise', { _id: id }, {name:1, description:1, _id:0}).then((dataE) => {
-                if (dataE.document !== null) {
-                    setName(dataE.document.name)
-                    setDescription(dataE.document.description)
-                }
-            })
-        }
-    })
+    const [posts, setPosts] = React.useState([])
+
+    React.useEffect(() => {
+        getProjection('user_worker', { _id: id }, {name:1, description:1,  _id:0}).then((data) => {
+            if (data.document !== null) {
+                setName(data.document.name)
+                setDescription(data.document.description)
+            } else {
+                getProjection('user_enterprise', { _id: id }, {name:1, description:1, _id:0}).then((dataE) => {
+                    if (dataE.document !== null) {
+                        setName(dataE.document.name)
+                        setDescription(dataE.document.description)
+                    }
+                })
+            }
+        })
+    }, [])
+
+    React.useEffect(() => {
+        getFromCollectionPaginationAggregation('posts', [{$match: {user_id: id}}, {$project: {_id:0, date:1, description:1, image:1}}, {$sort:{date:-1}}, {$limit:3}]).then((data) => {
+            setPosts(data.documents)
+            console.log(posts)
+        })
+    }, [])
 
     return (
         <div className={classes.container}>
@@ -116,6 +128,27 @@ function UserInfo(props) {
                     position={employee.position}
                 />
             ))}
+
+            {posts && (
+                <>
+                    <Typography variant="h6" color="text.primary" sx={{ mt: 3 }}>
+                        Posts:
+                    </Typography>
+                    <div>
+                        {posts.map((post, index) => (
+                            <PostCardUser
+                                // eslint-disable-next-line no-underscore-dangle
+                                key={post._id}
+                                post={post}
+                                user={user}
+                                setPosts={setPosts}
+                                index={index}
+                                posts={posts}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
 
             <Button
                 type="submit"
