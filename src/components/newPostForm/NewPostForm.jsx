@@ -6,6 +6,7 @@ function NewPostForm(props) {
 
     const [text, setText] = useState('')
     const [photo, setPhoto] = useState(props.photo || 'https://placeimg.com/640/480/animals')
+    const [tags, setTags] = useState([])
 
     const userID = { $oid: props.user._id }
 
@@ -18,7 +19,7 @@ function NewPostForm(props) {
             user_id: userID,
             comments: [],
             likes: 0,
-            tags: [],
+            tags: tags.split(',')
         }
 
         insertOneInCollection('posts', newPost)
@@ -38,6 +39,12 @@ function NewPostForm(props) {
             placeholder="Write your post here"
             value={text}
             onChange={(e) => setText(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Add tags separated by commas (no spaces)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
           />
           <button type="submit">Post</button>
         </form>

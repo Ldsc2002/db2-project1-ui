@@ -12,25 +12,15 @@ function UserInfo(props) {
     const [name_, setName] = React.useState('')
     const [description_, setDescription] = React.useState('')
 
-    getProjection('user_worker', { _id: id }, {name:1, _id:0}).then((data) => {
+    getProjection('user_worker', { _id: id }, {name:1, description:1,  _id:0}).then((data) => {
         if (data.document !== null) {
             setName(data.document.name)
-        } else {
-            getProjection('user_enterprise', { _id: id }, {name:1, _id:0}).then((dataE) => {
-                if (dataE.document !== null) {
-                    setName(data.document.name)
-                }
-            })
-        }
-    })
-
-    getProjection('user_worker', { _id: id }, {description:1, _id:0}).then((data) => {
-        if (data.document !== null) {
             setDescription(data.document.description)
         } else {
-            getProjection('user_enterprise', { _id: id }, {description:1, _id:0}).then((dataE) => {
+            getProjection('user_enterprise', { _id: id }, {name:1, description:1, _id:0}).then((dataE) => {
                 if (dataE.document !== null) {
-                    setDescription(data.document.description)
+                    setName(dataE.document.name)
+                    setDescription(dataE.document.description)
                 }
             })
         }

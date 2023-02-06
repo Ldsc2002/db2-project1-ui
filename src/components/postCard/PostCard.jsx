@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
+import { Favorite } from '@mui/icons-material'
+import { Chip } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
@@ -46,10 +48,18 @@ function PostCard(props) {
 
     const [newComment, setNewComment] = useState('')
     const [expanded, setExpanded] = useState(false)
+    const [likes, setLikes] = useState(post.likes)
 
     const handleExpandClick = () => {
         setExpanded(!expanded)
     }
+
+    useEffect(() => {
+        const postID = { $oid: post._id }
+        updateOneInCollection('posts', { _id: postID }, { $inc: { likes: 1 } })
+
+    }, [likes])
+        
 
     const handleSubmit = () => {
         // eslint-disable-next-line no-underscore-dangle
@@ -113,6 +123,24 @@ function PostCard(props) {
                     {post.description}
                 </Typography>
             </CardContent>
+
+
+            <CardContent style={{ paddingLeft: '15px', paddingTop:'0px'}}>
+                <IconButton aria-label="like" sx={{ fontSize: '12px' }}>
+                    <Favorite onClick={() => setLikes(likes + 1)} />
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '15px' }}>
+                    {likes}
+                    </Typography>
+                </IconButton>
+
+                <div>
+                    {post.tags.map(tag => (
+                    <Chip label={tag} key={tag} />
+                    ))}
+                </div>
+            </CardContent>
+
+
             <CardActions disableSpacing sx={{ ml: 1.2 }}>
                 <ExpandMore
                     expand={expanded}
