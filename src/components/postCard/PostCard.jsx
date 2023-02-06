@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
+import { Favorite, DeleteForever } from '@mui/icons-material'
+import { Chip } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
@@ -13,7 +15,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import UserComment from '../userComment/UserComment'
 import classes from './PostCard.module.css'
-import { updateOneInCollection } from '../db/api'
+import { updateOneInCollection, deleteOneFromCollection } from '../db/api'
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -38,15 +40,25 @@ const ExpandMore = styled((props) => {
 
 function PostCard(props) {
     const {
-        post, user, index, setPosts, posts,
+        post, user, index, setPosts, posts, handle,
     } = props
+
+    post.comments.sort((a, b) => new Date(a.date) - new Date(b.date))
 
     const [newComment, setNewComment] = useState('')
     const [expanded, setExpanded] = useState(false)
+    const [likes_, setLikes] = useState(post.likes)
 
     const handleExpandClick = () => {
         setExpanded(!expanded)
     }
+
+    useEffect(() => {
+        const postID = { $oid: post._id }
+        if (likes_ > post.likes) {
+            updateOneInCollection('posts', { _id: postID }, { $inc: { likes: 1 } })
+        }
+    }, [likes_])
 
     const handleSubmit = () => {
         // eslint-disable-next-line no-underscore-dangle
@@ -68,9 +80,30 @@ function PostCard(props) {
         })
     }
 
+    const handleDeletePost = () => {
+        // eslint-disable-next-line no-underscore-dangle
+        const postID = { $oid: post._id }
+        const post_user_id = { $oid: post.user_id }
+        const current_user_id = { $oid: user._id }
+
+        if (post_user_id.$oid === current_user_id.$oid) {
+            deleteOneFromCollection('posts', { _id: postID })
+                .then(() => {
+                    handle()
+                })
+        }
+    }
+
     return (
         <Card sx={{ maxWidth: 600, mb: 3 }}>
             <CardHeader
+                action={(
+                    <IconButton aria-label="delete">
+                        {post.user_id === user._id ? (
+                            <DeleteForever onClick={handleDeletePost} />
+                        ) : null}
+                    </IconButton>
+                )}
                 subheader={post.date}
             />
             <CardMedia
@@ -84,6 +117,22 @@ function PostCard(props) {
                     {post.description}
                 </Typography>
             </CardContent>
+
+            <CardContent style={{ paddingLeft: '15px', paddingTop: '0px' }}>
+                <IconButton aria-label="like" sx={{ fontSize: '12px' }}>
+                    <Favorite onClick={() => setLikes(likes_ + 1)} />
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '15px' }}>
+                        {likes_}
+                    </Typography>
+                </IconButton>
+
+                <div>
+                    {post.tags.map((tag) => (
+                        <Chip label={tag} key={tag} />
+                    ))}
+                </div>
+            </CardContent>
+
             <CardActions disableSpacing sx={{ ml: 1.2 }}>
                 <ExpandMore
                     expand={expanded}

@@ -3,15 +3,38 @@ import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import { DeleteForever } from '@mui/icons-material'
+import { deleteOneFromCollection } from '../db/api'
 
 function JobCard(props) {
-    const { job } = props
+    const { job, user, handle } = props
+
+    const postID = { $oid: job._id }
+    const post_user_id = { $oid: job.enterprise_id }
+    const current_user_id = { $oid: user._id }
+
+    const handleDeleteJob = () => {
+        if (post_user_id.$oid === current_user_id.$oid) {
+            deleteOneFromCollection('jobs', { _id: postID })
+                .then(() => {
+                    handle()
+                })
+        }
+    }
 
     return (
         <Card sx={{ maxWidth: 600, mb: 3 }}>
             <CardHeader
-                subheader={`${`Created on: ${job.date}`}`}
                 sx={{ pb: 0 }}
+                action={(
+                    <IconButton aria-label="delete">
+                        {job.enterprise_id === user._id ? (
+                            <DeleteForever onClick={handleDeleteJob} />
+                        ) : null}
+                    </IconButton>
+                )}
+                subheader={`${`Created on: ${job.date}`}`}
             />
             <CardContent sx={{ pt: 1.5 }}>
                 <Typography variant="h4" color="text.secondary">
@@ -57,6 +80,7 @@ function JobCard(props) {
                     {' '}
                     {job.amount_people}
                 </Typography>
+
             </CardContent>
         </Card>
     )
