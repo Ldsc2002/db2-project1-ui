@@ -16,12 +16,12 @@ function UserInfo(props) {
     const [posts, setPosts] = React.useState([])
 
     React.useEffect(() => {
-        getProjection('user_worker', { _id: id }, {name:1, description:1,  _id:0}).then((data) => {
+        getProjection('user_worker', { _id: id }, { name: 1, description: 1, _id: 0 }).then((data) => {
             if (data.document !== null) {
                 setName(data.document.name)
                 setDescription(data.document.description)
             } else {
-                getProjection('user_enterprise', { _id: id }, {name:1, description:1, _id:0}).then((dataE) => {
+                getProjection('user_enterprise', { _id: id }, { name: 1, description: 1, _id: 0 }).then((dataE) => {
                     if (dataE.document !== null) {
                         setName(dataE.document.name)
                         setDescription(dataE.document.description)
@@ -32,9 +32,12 @@ function UserInfo(props) {
     }, [])
 
     React.useEffect(() => {
-        getFromCollectionPaginationAggregation('posts', [{$match: {user_id: id}}, {$project: {_id:0, date:1, description:1, image:1}}, {$sort:{date:-1}}, {$limit:3}]).then((data) => {
+        getFromCollectionPaginationAggregation('posts', [{ $match: { user_id: id } }, {
+            $project: {
+                _id: 0, date: 1, description: 1, image: 1,
+            },
+        }, { $sort: { date: -1 } }, { $limit: 3 }]).then((data) => {
             setPosts(data.documents)
-            console.log(posts)
         })
     }, [])
 

@@ -11,7 +11,7 @@ export const getFilteredCollection = async (collection, filter, sort) => {
         dataSource: CLUSTER,
         collection,
         filter,
-        sort
+        sort,
     })
 
     const response = await fetch(`${DB_URI}findOne`, {
@@ -91,7 +91,6 @@ export const getFromCollectionPagination = async (collection, page, sort) => {
 }
 
 export const getFromCollectionPaginationAggregation = async (collection, pipeline) => {
-
     const data = JSON.stringify({
         database: DB,
         dataSource: CLUSTER,

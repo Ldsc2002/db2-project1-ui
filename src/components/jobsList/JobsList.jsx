@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
+import Modal from '@mui/material/Modal'
 import { getFromCollectionPagination, getProjection } from '../db/api'
 import JobCard from '../jobCard/JobCard'
 import classes from './JobsList.module.css'
-import Modal from '@mui/material/Modal'
 import NewJobForm from '../newJobForm/NewJobForm'
 
 function App(props) {
@@ -14,12 +14,11 @@ function App(props) {
 
     const { user } = props
 
-
-    getProjection('user_enterprise', { _id: { $oid: user._id } }, {name:1}).then((data) => {
+    // eslint-disable-next-line no-underscore-dangle
+    getProjection('user_enterprise', { _id: { $oid: user._id } }, { name: 1 }).then((data) => {
         if (data.document === null) {
-            return
-        }
-        else{
+            setEnterprise(null)
+        } else {
             setEnterprise(data.document.name)
         }
     })
@@ -31,10 +30,10 @@ function App(props) {
         })
         setJobs([])
         setPage(0)
-    };
+    }
 
     useEffect(() => {
-        getFromCollectionPagination('jobs',  page, { date: -1 }).then((data) => {
+        getFromCollectionPagination('jobs', page, { date: -1 }).then((data) => {
             setJobs(jobs.concat(data.documents))
         })
     }, [page])
@@ -51,12 +50,11 @@ function App(props) {
                 </>
             )}
 
-
             <div>
                 {
                     jobs.map((job) => (
                     // eslint-disable-next-line no-underscore-dangle
-                        <JobCard key={job._id} job={job} user={user} handle = {handleClose}/>
+                        <JobCard key={job._id} job={job} user={user} handle={handleClose} />
                     ))
                 }
             </div>

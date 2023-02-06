@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { styled } from '@mui/material/styles'
+import React from 'react'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-import { Favorite } from '@mui/icons-material'
-import { Chip } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
-import Collapse from '@mui/material/Collapse'
-import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import UserComment from '../userComment/UserComment'
-import classes from './PostCardUser.module.css'
 
 function PostCardUser(props) {
     const {
-        post
+        post,
     } = props
 
     return (

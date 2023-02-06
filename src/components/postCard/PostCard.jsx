@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-import { Favorite } from '@mui/icons-material'
+import { Favorite, DeleteForever } from '@mui/icons-material'
 import { Chip } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
@@ -16,7 +16,6 @@ import Button from '@mui/material/Button'
 import UserComment from '../userComment/UserComment'
 import classes from './PostCard.module.css'
 import { updateOneInCollection, deleteOneFromCollection } from '../db/api'
-import { DeleteForever } from '@mui/icons-material'
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -59,9 +58,7 @@ function PostCard(props) {
         if (likes_ > post.likes) {
             updateOneInCollection('posts', { _id: postID }, { $inc: { likes: 1 } })
         }
-
     }, [likes_])
-        
 
     const handleSubmit = () => {
         // eslint-disable-next-line no-underscore-dangle
@@ -90,28 +87,23 @@ function PostCard(props) {
         const current_user_id = { $oid: user._id }
 
         if (post_user_id.$oid === current_user_id.$oid) {
-
             deleteOneFromCollection('posts', { _id: postID })
                 .then(() => {
-                    console.log('Post deleted successfully!');
-                    handle();
+                    handle()
                 })
-                .catch((error) => {
-                    console.error(`Error deleting post: ${error}`);
-                });
         }
     }
 
     return (
         <Card sx={{ maxWidth: 600, mb: 3 }}>
             <CardHeader
-                action={
+                action={(
                     <IconButton aria-label="delete">
                         {post.user_id === user._id ? (
-                        <DeleteForever onClick={handleDeletePost} />
+                            <DeleteForever onClick={handleDeletePost} />
                         ) : null}
                     </IconButton>
-                }
+                )}
                 subheader={post.date}
             />
             <CardMedia
@@ -126,22 +118,20 @@ function PostCard(props) {
                 </Typography>
             </CardContent>
 
-
-            <CardContent style={{ paddingLeft: '15px', paddingTop:'0px'}}>
+            <CardContent style={{ paddingLeft: '15px', paddingTop: '0px' }}>
                 <IconButton aria-label="like" sx={{ fontSize: '12px' }}>
                     <Favorite onClick={() => setLikes(likes_ + 1)} />
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '15px' }}>
-                    {likes_}
+                        {likes_}
                     </Typography>
                 </IconButton>
 
                 <div>
-                    {post.tags.map(tag => (
-                    <Chip label={tag} key={tag} />
+                    {post.tags.map((tag) => (
+                        <Chip label={tag} key={tag} />
                     ))}
                 </div>
             </CardContent>
-
 
             <CardActions disableSpacing sx={{ ml: 1.2 }}>
                 <ExpandMore

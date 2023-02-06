@@ -24,16 +24,15 @@ function SignIn(props) {
         const user = data.get('user')
         const collection = `user_${type}`
 
-        getProjection(collection, { name: user }, {_id:1}).then((res) => {
+        getProjection(collection, { name: user }, { _id: 1 }).then((res) => {
             if (res.document === null) {
                 alert('User not found')
             } else {
-                getFilteredCollection(collection, { name: user }).then((res) => {
-                    setUser(res.document)
+                getFilteredCollection(collection, { name: user }).then((resE) => {
+                    setUser(resE.document)
                 })
             }
         })
-
     }
 
     return (

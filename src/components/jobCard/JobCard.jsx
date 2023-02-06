@@ -15,17 +15,11 @@ function JobCard(props) {
     const current_user_id = { $oid: user._id }
 
     const handleDeleteJob = () => {
-        // eslint-disable-next-line no-underscore-dangle
         if (post_user_id.$oid === current_user_id.$oid) {
-
             deleteOneFromCollection('jobs', { _id: postID })
                 .then(() => {
-                    console.log('Post deleted successfully!')
-                    handle();
+                    handle()
                 })
-                .catch((error) => {
-                    console.error(`Error deleting post: ${error}`)
-                });
         }
     }
 
@@ -33,13 +27,13 @@ function JobCard(props) {
         <Card sx={{ maxWidth: 600, mb: 3 }}>
             <CardHeader
                 sx={{ pb: 0 }}
-                action={
+                action={(
                     <IconButton aria-label="delete">
                         {job.enterprise_id === user._id ? (
-                        <DeleteForever onClick={handleDeleteJob} />
+                            <DeleteForever onClick={handleDeleteJob} />
                         ) : null}
                     </IconButton>
-                }
+                )}
                 subheader={`${`Created on: ${job.date}`}`}
             />
             <CardContent sx={{ pt: 1.5 }}>
