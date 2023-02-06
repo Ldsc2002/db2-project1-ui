@@ -90,6 +90,27 @@ export const getFromCollectionPagination = async (collection, page, sort) => {
     return response.json()
 }
 
+export const getFromCollectionPaginationAggregation = async (collection, pipeline) => {
+
+    const data = JSON.stringify({
+        database: DB,
+        dataSource: CLUSTER,
+        collection,
+        pipeline,
+    })
+
+    const response = await fetch(`${DB_URI}aggregate`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': API_KEY,
+        },
+        body: data,
+    })
+
+    return response.json()
+}
+
 export const updateOneInCollection = async (collection, filter, update) => {
     const data = JSON.stringify({
         database: DB,

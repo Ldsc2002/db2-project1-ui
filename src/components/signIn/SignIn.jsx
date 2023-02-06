@@ -11,7 +11,7 @@ import FormLabel from '@mui/material/FormLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
-import { getFilteredCollection } from '../db/api'
+import { getFilteredCollection, getProjection } from '../db/api'
 
 function SignIn(props) {
     const { setUser } = props
@@ -24,13 +24,16 @@ function SignIn(props) {
         const user = data.get('user')
         const collection = `user_${type}`
 
-        getFilteredCollection(collection, { name: user }).then((res) => {
+        getProjection(collection, { name: user }, {_id:1}).then((res) => {
             if (res.document === null) {
                 alert('User not found')
             } else {
-                setUser(res.document)
+                getFilteredCollection(collection, { name: user }).then((res) => {
+                    setUser(res.document)
+                })
             }
         })
+
     }
 
     return (
