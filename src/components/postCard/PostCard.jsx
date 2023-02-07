@@ -148,7 +148,7 @@ function PostCard(props) {
                 <CardContent sx={{ pt: 0 }}>
                     {post.comments.map((comment) => (
                         <div style={{ marginBottom: '15px' }} key={comment.commentator_id}>
-                            <UserComment comment={comment} />
+                            <UserComment comment={comment} user={user} post={post} setPosts={setPosts} posts={posts}/>
                         </div>
                     ))}
 
