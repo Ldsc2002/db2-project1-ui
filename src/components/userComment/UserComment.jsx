@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Typography from '@mui/material/Typography'
+import { DeleteForever } from '@mui/icons-material'
 import { getFilteredCollection } from '../db/api'
+import classes from './UserComment.module.css'
+import { updateOneInCollection } from '../db/api'
 
 function UserComment(props) {
-    const { comment } = props
+    const { comment, user, post, setPosts, posts } = props
 
+    const commentatorID = useRef(comment.commentator_id)
     const [commentator, setCommentator] = useState(comment.commentator_id)
 
     useEffect(() => {
@@ -23,19 +27,38 @@ function UserComment(props) {
         })
     }, [])
 
-    return (
-        <div>
-            <Typography variant="body" color="text.primary">
-                {commentator}
-                {' '}
-                on
-                {' '}
-                {comment.date}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                {comment.comment}
-            </Typography>
+    const handleDelete = () => {
+        const postID = { $oid: post._id }
+        console.log(post.comments)
+        console.log(comment)
 
+        const commentIndex = post.comments.indexOf(comment)
+
+        updateOneInCollection('posts', { _id: postID }, { $pop: { comments: 1 } }).then(() => {
+            let newPosts = [...posts]
+            newPosts[posts.indexOf(post)].comments.splice(commentIndex, 1)
+            setPosts(newPosts)
+        })
+    }
+
+    return (
+        <div className={classes.container}>
+            <div>
+                <Typography variant="body" color="text.primary">
+                    {commentator}
+                    {' '}
+                    on
+                    {' '}
+                    {comment.date}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {comment.comment}
+                </Typography>
+
+            </div>
+            {commentatorID.current === user._id && (
+                <DeleteForever onClick={handleDelete}/>
+            )}
         </div>
     )
 }
