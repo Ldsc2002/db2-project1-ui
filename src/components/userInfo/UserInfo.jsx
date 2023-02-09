@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import classes from './UserInfo.module.css'
 import UserContact from '../userContact/UserContact'
 import PostCardUser from '../postCardUser/PostCardUser'
-import { getProjection, getFromCollectionPaginationAggregation } from '../db/api'
+import { getProjection, getFromCollectionPaginationAggregation, bulkUpdate } from '../db/api'
 
 function UserInfo(props) {
     const { user } = props
@@ -14,6 +14,10 @@ function UserInfo(props) {
     const [description_, setDescription] = React.useState('')
 
     const [posts, setPosts] = React.useState([])
+
+    const handleBulk = () => {
+
+    }
 
     React.useEffect(() => {
         getProjection('user_worker', { _id: id }, { name: 1, description: 1, _id: 0 }).then((data) => {
@@ -43,7 +47,7 @@ function UserInfo(props) {
 
     return (
         <div className={classes.container}>
-            <img src={user.photo} alt="Profile" className={classes.image} />
+            <img src={user.photo} alt="Profile" className={classes.image} onClick={handleBulk} />
 
             <Typography variant="h3" color="text.primary" sx={{ mt: 2 }}>
                 {name_}

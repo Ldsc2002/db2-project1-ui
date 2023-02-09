@@ -29,8 +29,6 @@ function UserComment(props) {
 
     const handleDelete = () => {
         const postID = { $oid: post._id }
-        console.log(post.comments)
-        console.log(comment)
 
         const commentIndex = post.comments.indexOf(comment)
 

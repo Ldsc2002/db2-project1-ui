@@ -6,8 +6,9 @@ import UserFeed from '../userFeed/UserFeed'
 import UserInfo from '../userInfo/UserInfo'
 import UserSearch from '../userSearch/UserSearch'
 import UserStats from '../userStats/UserStats'
+import PageStats from '../pageStats/PageStats'
 
-const pages = ['Feed', 'Jobs', 'Statistics', 'Profile', 'Search']
+const pages = ['Feed', 'Jobs', 'Charts', 'Statistics', 'Profile', 'Search']
 
 function App() {
     const [user, setUser] = useState(null)
@@ -20,7 +21,8 @@ function App() {
                     <NavBar setPage={setPage} pages={pages} />
                     {page === 'Feed' && <UserFeed user={user} />}
                     {page === 'Jobs' && <JobsList user={user} />}
-                    {page === 'Statistics' && <UserStats />}
+                    {page === 'Charts' && <UserStats />}
+                    {page === 'Statistics' && <PageStats />}
                     {page === 'Profile' && <UserInfo user={user} />}
                     {page === 'Search' && <UserSearch />}
                 </>

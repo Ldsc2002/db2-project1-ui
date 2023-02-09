@@ -1,0 +1,46 @@
+.container {
+    margin-top: 120px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .slider {
+    width: 80%;
+  }
+  
+  .slider-value {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .tableContainer {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead {
+    background-color: lightgray;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid lightgray;
+    text-align: left;
+  }
+  
+  th {
+    font-weight: bold;
+  }
+  
