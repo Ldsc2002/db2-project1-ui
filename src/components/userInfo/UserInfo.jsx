@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import classes from './UserInfo.module.css'
 import UserContact from '../userContact/UserContact'
 import PostCardUser from '../postCardUser/PostCardUser'
-import { getProjection, getFromCollectionPaginationAggregation, bulkUpdate } from '../db/api'
+import { getProjection, getFromCollectionPaginationAggregation } from '../db/api'
 
 function UserInfo(props) {
     const { user } = props
